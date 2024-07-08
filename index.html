@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>결혼식 참석 여부 조사</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- NES.css -->
+    <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Stardust';
+            src: url('fonts/stardust.ttf') format('truetype'),
+                 url('fonts/stardust.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+        body {
+            font-family: 'Stardust', cursive;
+            margin: 0;
+            padding: 0;
+            background-color: #212529;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #000;
+            padding: 20px;
+            padding-top: 5em;
+            padding-bottom: 5em;
+            border: 3px solid #fff;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2em; /* 글씨 크기 조정 */
+            text-align: center; /* 타이틀 중앙 정렬 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .heart-icon {
+            font-size: 1.5em; /* 하트 이모티콘 크기 */
+            margin-right: 10px; /* 하트와 텍스트 사이 여백 */
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        input[type="text"], input[type="submit"] {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 3px solid #fff;
+            background-color: #000;
+            color: #fff;
+            font-size: 1em;
+            font-family: 'Stardust', cursive;
+        }
+        input[type="submit"] {
+            cursor: pointer;
+        }
+        .pixel-calendar {
+            display: inline-block;
+            padding: 10px;
+            border: 3px solid #fff;
+            background-color: #000;
+        }
+        .pixel-calendar .month {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        .pixel-calendar .date {
+            font-size: 2em;
+            color: #ffcc00;
+        }
+        .event-time {
+            font-size: 1.5em;
+            margin-top: 10px;
+            color: #ffcc00;
+        }
+        /* .nes-radio-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .nes-radio-container label {
+            margin-bottom: 10px;
+            position: relative;
+        }
+        .nes-radio-container label .nes-radio {
+            position: absolute;
+            opacity: 0;
+        }
+        .nes-radio-container label .nes-radio + span {
+            position: relative;
+            padding-left: 30px;
+            cursor: pointer;
+        }
+        .nes-radio-container label .nes-radio + span:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            background-color: transparent;
+            transition: background-color 0.3s ease;
+        }
+        .nes-radio-container label .nes-radio:checked + span:before {
+            background-color: #ffcc00;
+        }
+        .nes-radio-container label .nes-radio:checked + span:after {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-left: 2px solid #000;
+            border-bottom: 2px solid #000;
+            transform: rotate(-45deg);
+        } */
+        /* 다이얼로그 내부 스타일 */
+        .nes-dialog {
+            border: 3px solid #f0dc8b; /* 노란색 테두리 추가 */
+
+            background-color: #fcffd5; /* 배경색 설정 */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* 그림자 효과 추가 */
+            border-radius: 10px; /* 테두리 모서리 둥글게 */
+        }
+        .nes-dialog menu {
+            /* flex: 1;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10rm; 
+            padding-left: 10rm;
+            padding-right: 10rm; */
+        }
+        .dialog-menu{
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+        .nes-dialog button {
+            flex: 1; 
+            padding-left: 2rm;
+            padding-right: 2rm;
+            margin: 0 30px; /* 버튼 간격 */
+        }
+        #gobtn {
+            /* padding: 30px; */
+            padding-left: 20%;
+            padding-right: 20%;
+            font-size: 1.6em;
+            font-weight: bold;
+        }
+        #name_field {
+            border-bottom: 1.5em;
+        }
+        #left-character {
+            transform: scaleX(-1); /* 좌우 반전 설정 */
+        }
+        #calendar-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container nes-container is-dark with-title">
+        <h1>
+           도형&nbsp;&nbsp;&nbsp;<span class="nes-icon heart is-medium heart"></span>&nbsp; 자은
+        </h1>
+        <section id="calendar-section">
+            <i id="left-character" class="nes-charmander"></i>
+            <div class="pixel-calendar">
+                <div class="month">2024년&nbsp;  10월</div>
+                <div class="date">5 일</div>
+            </div>
+            <i id="right-character" class="nes-squirtle"></i>
+        </section>
+        <!-- <i id="left-character" class="nes-charmander"></i>
+        <div class="pixel-calendar">
+            <div class="month">2024년&nbsp;&nbsp; 10월</div>
+            <div class="date">5 일</div>
+        </div>
+        <i id="right-character" class="nes-squirtle"></i> -->
+        <div class="event-time">17시 30분에 시작합니다!</div>
+        <section>
+            <div id="name_field" class="nes-field is-inline">
+                <!-- <label for="warning_field"></label> -->
+                <input type="text" id="warning_field" class="nes-input is-warning" placeholder="이름을 입력하세요">
+            </div>
+            <button type="button" id="gobtn" class="nes-btn is-warning" onclick="document.getElementById('dialog-attendance').showModal();">
+                참석!!
+            </button>
+            <dialog class="nes-dialog" id="dialog-attendance">
+                <form method="dialog" onsubmit="return confirmAttendance()">
+                    <p>정말 참석하시겠습니까?</p>
+                    <menu class="dialog-menu">
+                        <button type="submit" class="nes-btn is-warning">네!!!</button>
+                        
+                        <button type="button" class="nes-btn is-error" onclick="document.getElementById('dialog-attendance').close();">취소</button>
+                    </menu>
+                </form>
+            </dialog>
+        </section>
+        <p style="font-size:0.2rm; color: #f0dc8b;">결혼식에 &nbsp;참석할 &nbsp;계획이시면 &nbsp;참석&nbsp; 버튼을 &nbsp;눌러주세요</p>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function confirmAttendance() {
+            // 여기서 실제로 AJAX 요청을 보내고 서버에 데이터를 전송하는 코드를 작성합니다.
+            alert('감사합니다!!');
+            document.getElementById('dialog-attendance').close();
+            return false; // 폼의 기본 동작을 막습니다.
+        }
+
+        let flipFlag = false; // 좌우 반전 여부를 저장할 플래그
+    
+        function flipCharacters() {
+            // 캐릭터 1 좌우 반전
+            const character1 = document.getElementById('left-character');
+            character1.style.transform = flipFlag ? 'scaleX(1)' : 'scaleX(-1)';
+
+            // 캐릭터 2 좌우 반전
+            const character2 = document.getElementById('right-character');
+            character2.style.transform = flipFlag ? 'scaleX(-1)' : 'scaleX(1)';
+
+            flipFlag = !flipFlag; // 플래그 반전
+        }
+
+        setInterval(flipCharacters, 1200); // 매 초마다 좌우 반전 함수 호출
+    </script>
+</body>
+</html>
