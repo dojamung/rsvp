@@ -85,6 +85,50 @@
             margin-top: 10px;
             color: #ffcc00;
         }
+        /* .nes-radio-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .nes-radio-container label {
+            margin-bottom: 10px;
+            position: relative;
+        }
+        .nes-radio-container label .nes-radio {
+            position: absolute;
+            opacity: 0;
+        }
+        .nes-radio-container label .nes-radio + span {
+            position: relative;
+            padding-left: 30px;
+            cursor: pointer;
+        }
+        .nes-radio-container label .nes-radio + span:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            background-color: transparent;
+            transition: background-color 0.3s ease;
+        }
+        .nes-radio-container label .nes-radio:checked + span:before {
+            background-color: #ffcc00;
+        }
+        .nes-radio-container label .nes-radio:checked + span:after {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-left: 2px solid #000;
+            border-bottom: 2px solid #000;
+            transform: rotate(-45deg);
+        } */
         /* 다이얼로그 내부 스타일 */
         .nes-dialog {
             border: 3px solid #f0dc8b; /* 노란색 테두리 추가 */
@@ -129,32 +173,6 @@
             justify-content: space-between;
             align-items: center;
         }
-
-        /* 작은 화면을 위한 미디어 쿼리 */
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 1.5em; /* 글씨 크기 줄임 */
-            }
-            .container {
-                padding: 10px;
-                padding-top: 3em;
-                padding-bottom: 3em;
-            }
-            .pixel-calendar .month, .pixel-calendar .date, .event-time {
-                font-size: 1em;
-            }
-            #gobtn {
-                font-size: 1em;
-                padding-left: 10%;
-                padding-right: 10%;
-            }
-            .pixel-calendar {
-                padding: 5px;
-                border-width: 2px;
-            }
-
-        }
-
     </style>
 </head>
 <body>
@@ -170,68 +188,59 @@
             </div>
             <i id="right-character" class="nes-squirtle"></i>
         </section>
+        <!-- <i id="left-character" class="nes-charmander"></i>
+        <div class="pixel-calendar">
+            <div class="month">2024년&nbsp;&nbsp; 10월</div>
+            <div class="date">5 일</div>
+        </div>
+        <i id="right-character" class="nes-squirtle"></i> -->
         <div class="event-time">17시 30분에 시작합니다!</div>
-        <form>
+        <section>
             <div id="name_field" class="nes-field is-inline">
-                <input type="text" id="warning_field" class="nes-input is-warning" placeholder="이름을 입력하세요" required>
+                <!-- <label for="warning_field"></label> -->
+                <input type="text" id="warning_field" class="nes-input is-warning" placeholder="이름을 입력하세요">
             </div>
-            <button type="button" id="gobtn" class="nes-btn is-warning" onclick="openDialog()">
+            <button type="button" id="gobtn" class="nes-btn is-warning" onclick="document.getElementById('dialog-attendance').showModal();">
                 참석!!
             </button>
             <dialog class="nes-dialog" id="dialog-attendance">
-                <form method="dialog" onsubmit="return submitForm()">
+                <form method="dialog" onsubmit="return confirmAttendance()">
                     <p>정말 참석하시겠습니까?</p>
                     <menu class="dialog-menu">
                         <button type="submit" class="nes-btn is-warning">네!!!</button>
+                        
                         <button type="button" class="nes-btn is-error" onclick="document.getElementById('dialog-attendance').close();">취소</button>
                     </menu>
                 </form>
             </dialog>
-        </form>
-        <p style="font-size:0.8rem; color: #f0dc8b;">결혼식에 참석할 계획이시면 참석 버튼을 눌러주세요</p>
+        </section>
+        <p style="font-size:0.2rm; color: #f0dc8b;">결혼식에 &nbsp;참석할 &nbsp;계획이시면 &nbsp;참석&nbsp; 버튼을 &nbsp;눌러주세요</p>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        function openDialog() {
-            const nameField = document.getElementById('warning_field');
-            if (nameField.checkValidity()) {
-                document.getElementById('dialog-attendance').showModal();
-            } else {
-                alert('이름을 입력하세요.');
-            }
+        function confirmAttendance() {
+            // 여기서 실제로 AJAX 요청을 보내고 서버에 데이터를 전송하는 코드를 작성합니다.
+            alert('감사합니다!!');
+            document.getElementById('dialog-attendance').close();
+            return false; // 폼의 기본 동작을 막습니다.
         }
 
-        function submitForm(event) {
-            event.preventDefault(); // 폼의 기본 동작을 막음
-            const nameField = document.getElementById('warning_field').value;
-            console.log(nameField);
-            $.ajax({
-                url: 'http://localhost:3000/api/regist',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({ name: nameField }),
-                success: function(response) {
-                    alert('감사합니다!!');
-                    document.getElementById('dialog-attendance').close();
-                },
-                error: function(error) {
-                    alert('오류가 발생했습니다. 다시 시도해주세요.');
-                }
-            });
-        }
-
-        let flipFlag = false;
-
+        let flipFlag = false; // 좌우 반전 여부를 저장할 플래그
+    
         function flipCharacters() {
+            // 캐릭터 1 좌우 반전
             const character1 = document.getElementById('left-character');
             character1.style.transform = flipFlag ? 'scaleX(1)' : 'scaleX(-1)';
+
+            // 캐릭터 2 좌우 반전
             const character2 = document.getElementById('right-character');
             character2.style.transform = flipFlag ? 'scaleX(-1)' : 'scaleX(1)';
-            flipFlag = !flipFlag;
+
+            flipFlag = !flipFlag; // 플래그 반전
         }
 
-        setInterval(flipCharacters, 1300);
+        setInterval(flipCharacters, 1200); // 매 초마다 좌우 반전 함수 호출
     </script>
 </body>
 </html>
