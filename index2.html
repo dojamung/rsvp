@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>결혼식 참석 여부 조사</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- NES.css -->
+    <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Stardust';
+            src: url('fonts/stardust.ttf') format('truetype'),
+                 url('fonts/stardust.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+        body {
+            font-family: 'Stardust', cursive;
+            margin: 0;
+            padding: 0;
+            background-color: #212529;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #000;
+            padding: 20px;
+            padding-top: 3em;
+            padding-bottom: 3em;
+            border: 3px solid #fff;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .heart-icon {
+            font-size: 1.5em;
+            margin: 0 10px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        input[type="text"], input[type="submit"] {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 3px solid #fff;
+            background-color: #000;
+            color: #fff;
+            font-size: 1em;
+            font-family: 'Stardust', cursive;
+        }
+        input[type="submit"] {
+            cursor: pointer;
+        }
+        .pixel-calendar {
+            display: inline-block;
+            padding: 10px;
+            border: 3px solid #fff;
+            background-color: #000;
+        }
+        .pixel-calendar .month {
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
+        .pixel-calendar .date {
+            font-size: 1.5em;
+            color: #ffcc00;
+        }
+        .event-time {
+            font-size: 1.2em;
+            margin-top: 10px;
+            color: #ffcc00;
+        }
+        .nes-dialog {
+            border: 3px solid #f0dc8b;
+            background-color: #fcffd5;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+        }
+        .dialog-menu {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        .nes-dialog button {
+            flex: 1; 
+            margin: 0 10px;
+        }
+        #gobtn {
+            padding-left: 15%;
+            padding-right: 15%;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        #name_field {
+            margin-bottom: 1em;
+        }
+        #calendar-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #left-character, #right-character {
+            font-size: 2em;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+                padding-top: 2em;
+                padding-bottom: 2em;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+            .pixel-calendar .month, .pixel-calendar .date, .event-time {
+                font-size: 0.9em;
+            }
+            #gobtn {
+                font-size: 1em;
+                padding-left: 10%;
+                padding-right: 10%;
+            }
+            .pixel-calendar {
+                padding: 5px;
+                border-width: 2px;
+            }
+            #left-character, #right-character {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container nes-container is-dark with-title">
+        <h1>
+           도형 <span class="nes-icon heart is-medium heart-icon"></span> 자은
+        </h1>
+        <section id="calendar-section">
+            <i id="left-character" class="nes-charmander"></i>
+            <div class="pixel-calendar">
+                <div class="month">2024년 10월</div>
+                <div class="date">5 일</div>
+            </div>
+            <i id="right-character" class="nes-squirtle"></i>
+        </section>
+        <div class="event-time">17시 30분에 시작합니다!</div>
+        <form id="rsvpForm">
+            <div id="name_field" class="nes-field is-inline">
+                <input type="text" id="warning_field" class="nes-input is-warning" placeholder="이름을 입력하세요" required>
+            </div>
+            <button type="button" id="gobtn" class="nes-btn is-warning" onclick="openDialog()">
+                참석!!
+            </button>
+            <dialog class="nes-dialog" id="dialog-attendance">
+                <form method="dialog">
+                    <p>정말 참석하시겠습니까?</p>
+                    <menu class="dialog-menu">
+                        <button type="button" class="nes-btn is-warning" onclick="submitForm()">네!!!</button>
+                        <button type="button" class="nes-btn is-error" onclick="document.getElementById('dialog-attendance').close();">취소</button>
+                    </menu>
+                </form>
+            </dialog>
+        </form>
+        <p style="font-size:0.8rem; color: #f0dc8b;">결혼식에 참석할 계획이시면 참석 버튼을 눌러주세요</p>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function openDialog() {
+            const nameField = document.getElementById('warning_field');
+            if (nameField.checkValidity()) {
+                document.getElementById('dialog-attendance').showModal();
+            } else {
+                alert('이름을 입력하세요.');
+            }
+        }
+
+        function submitForm() {
+            const nameField = document.getElementById('warning_field').value;
+            console.log(nameField);
+            $.ajax({
+                url: 'http://localhost:3000/api/regist',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ name: nameField }),
+                success: function(response) {
+                    alert('감사합니다!!');
+                    document.getElementById('dialog-attendance').close();
+                },
+                error: function(error) {
+                    alert('오류가 발생했습니다. 다시 시도해주세요.');
+                }
+            });
+        }
+
+        let flipFlag = false;
+
+        function flipCharacters() {
+            const character1 = document.getElementById('left-character');
+            character1.style.transform = flipFlag ? 'scaleX(1)' : 'scaleX(-1)';
+            const character2 = document.getElementById('right-character');
+            character2.style.transform = flipFlag ? 'scaleX(-1)' : 'scaleX(1)';
+            flipFlag = !flipFlag;
+        }
+
+        setInterval(flipCharacters, 1300);
+
+        // 폼 제출 시 페이지 새로고침 방지
+        document.getElementById('rsvpForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+        });
+    </script>
+</body>
+</html>
