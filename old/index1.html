@@ -20,18 +20,15 @@
             font-family: 'Stardust', cursive;
             margin: 0;
             padding: 0;
+            background-color: #212529;
             color: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #212529;
         }
         .container {
-            background-image: url('./images/ground.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+            background-color: #000;
             padding: 20px;
             padding-top: 3em;
             padding-bottom: 3em;
@@ -40,21 +37,6 @@
             max-width: 400px;
             text-align: center;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            position: relative;
-        }
-        .container::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 1;
-        }
-        .container > * {
-            position: relative;
-            z-index: 2;
         }
         h1 {
             margin-bottom: 20px;
@@ -76,7 +58,7 @@
             padding: 10px;
             margin-bottom: 10px;
             border: 3px solid #fff;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: #000;
             color: #fff;
             font-size: 1em;
             font-family: 'Stardust', cursive;
@@ -85,35 +67,27 @@
             cursor: pointer;
         }
         .pixel-calendar {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px; /* 패딩을 유지하여 크기 조정 */
-    border: 3px solid #fff;
-    background-color: rgba(0, 0, 0, 0.5); /* 투명도 증가 */
-    width: 200px; /* 너비 조정 */
-    height: 120px; /* 높이 조정 */
-    text-align: center; /* 내용 중앙 정렬 */
-}
-
-.pixel-calendar .month {
-    font-size: 1.6em; /* 폰트 크기 증가 */
-    margin-bottom: 10px; /* 간격 조정 */
-}
-
-.pixel-calendar .date {
-    font-size: 2.2em; /* 폰트 크기 증가 */
-    color: #ffcc00;
-}
-.event-time {
-    font-size: 1.2em;
-    margin-top: 10px;
-    color: rgba(255, 204, 0, 0.6); /* 투명도 추가 */
-}
+            display: inline-block;
+            padding: 10px;
+            border: 3px solid #fff;
+            background-color: #000;
+        }
+        .pixel-calendar .month {
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
+        .pixel-calendar .date {
+            font-size: 1.5em;
+            color: #ffcc00;
+        }
+        .event-time {
+            font-size: 1.2em;
+            margin-top: 10px;
+            color: #ffcc00;
+        }
         .nes-dialog {
             border: 3px solid #f0dc8b;
-            background-color: rgba(252, 255, 213, 0.9);
+            background-color: #fcffd5;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
             border-radius: 10px;
         }
@@ -131,41 +105,16 @@
             font-size: 1.2em;
             font-weight: bold;
         }
-        #name_field, #guest_count_field {
+        #name_field, #side_field, #guest_count_field {
             margin-bottom: 1em;
         }
         #calendar-section {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
         }
-        #character-section {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            margin-top: 20px;
-        }
-        .character-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-        }
-        .character {
+        #left-character, #right-character {
             font-size: 2em;
-            transition: transform 0.3s ease;
-        }
-        .character-text {
-            margin-top: 5px;
-            font-size: 0.8em;
-        }
-        .selected .character {
-            transform: scale(1.2);
-        }
-        .selected .character-text {
-            color: #ffcc00;
-            font-weight: bold;
         }
 
         @media (max-width: 480px) {
@@ -177,7 +126,7 @@
             h1 {
                 font-size: 1.5em;
             }
-            .event-time {
+            .pixel-calendar .month, .pixel-calendar .date, .event-time {
                 font-size: 0.9em;
             }
             #gobtn {
@@ -189,7 +138,7 @@
                 padding: 5px;
                 border-width: 2px;
             }
-            .character {
+            #left-character, #right-character {
                 font-size: 1.5em;
             }
         }
@@ -201,36 +150,38 @@
            도형 <span class="nes-icon heart is-medium heart-icon"></span> 자은
         </h1>
         <section id="calendar-section">
+            <i id="left-character" class="nes-charmander"></i>
             <div class="pixel-calendar">
                 <div class="month">2024년 10월</div>
                 <div class="date">5 일</div>
             </div>
+            <i id="right-character" class="nes-squirtle"></i>
         </section>
-        <div class="event-time">엘리에나호텔 5층</div>
+        <div class="event-time">엘리에나 호텔 5층</div>
         <div class="event-time">17시 30분에 시작합니다!</div>
-        <section id="character-section">
-            <div class="character-container" onclick="selectSide('groom')">
-                <i id="groom-character" class="character nes-charmander"></i>
-                <span class="character-text">신랑측</span>
-            </div>
-            <div class="character-container" onclick="selectSide('bride')">
-                <i id="bride-character" class="character nes-squirtle"></i>
-                <span class="character-text">신부측</span>
-            </div>
-        </section>
         <form id="rsvpForm">
-            <div id="name_field" class="nes-field is-inline">
-                <input type="text" id="warning_field" class="nes-input is-warning" placeholder="이름을 입력하세요" required>
+            <div id="side_field" class="nes-select">
+                <select id="side_select" required>
+                    <option value="" disabled selected hidden>신랑/신부측 선택</option>
+                    <option value="groom">신랑측</option>
+                    <option value="bride">신부측</option>
+                </select>
             </div>
-            <input type="hidden" id="side_select" name="side" required>
             <div id="guest_count_field" class="nes-select">
                 <select id="guest_count" required>
                     <option value="" disabled selected hidden>참석 인원</option>
                     <option value="1">1명</option>
                     <option value="2">2명</option>
-                    <option value="3">3명 이상</option>
+                    <option value="3">3명</option>
+                    <option value="4">4명</option>
+                    <option value="5">5명 이상</option>
                 </select>
             </div>
+            <div id="name_field" class="nes-field is-inline">
+                <input type="text" id="warning_field" class="nes-input is-warning" placeholder="이름을 입력하세요" required>
+            </div>
+
+
             <button type="button" id="gobtn" class="nes-btn is-warning" onclick="openDialog()">
                 참석!!
             </button>
@@ -249,46 +200,11 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        let selectedSide = null;
-        let animationInterval = null;
-
-        function selectSide(side) {
-            selectedSide = side;
-            document.getElementById('side_select').value = side;
-            
-            const groomContainer = document.querySelector('.character-container:first-child');
-            const brideContainer = document.querySelector('.character-container:last-child');
-            
-            if (side === 'groom') {
-                groomContainer.classList.add('selected');
-                brideContainer.classList.remove('selected');
-            } else {
-                brideContainer.classList.add('selected');
-                groomContainer.classList.remove('selected');
-            }
-
-            // Clear existing animation
-            clearInterval(animationInterval);
-
-            // Start new animation for selected character
-            animateCharacter(side);
-        }
-
-        function animateCharacter(side) {
-            let flipFlag = false;
-            const character = document.getElementById(side + '-character');
-            
-            animationInterval = setInterval(() => {
-                character.style.transform = flipFlag ? 'scaleX(1)' : 'scaleX(-1)';
-                flipFlag = !flipFlag;
-            }, 1300);
-        }
-
         function openDialog() {
             const nameField = document.getElementById('warning_field');
             const sideSelect = document.getElementById('side_select');
             const guestCount = document.getElementById('guest_count');
-            if (nameField.checkValidity() && sideSelect.value && guestCount.checkValidity()) {
+            if (nameField.checkValidity() && sideSelect.checkValidity() && guestCount.checkValidity()) {
                 document.getElementById('dialog-attendance').showModal();
             } else {
                 alert('모든 필드를 입력해주세요.');
@@ -318,6 +234,18 @@
                 }
             });
         }
+
+        let flipFlag = false;
+
+        function flipCharacters() {
+            const character1 = document.getElementById('left-character');
+            character1.style.transform = flipFlag ? 'scaleX(1)' : 'scaleX(-1)';
+            const character2 = document.getElementById('right-character');
+            character2.style.transform = flipFlag ? 'scaleX(-1)' : 'scaleX(1)';
+            flipFlag = !flipFlag;
+        }
+
+        setInterval(flipCharacters, 1300);
 
         // 폼 제출 시 페이지 새로고침 방지
         document.getElementById('rsvpForm').addEventListener('submit', function(e) {
