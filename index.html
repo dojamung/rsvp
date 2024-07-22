@@ -13,10 +13,16 @@
     <meta property="og:image" content="https://dojamung.github.io/rsvp/images/meta.jpg">
     <meta property="og:url" content="https://dojamung.github.io/rsvp">
     <style>
-        @font-face {
+        /* @font-face {
             font-family: 'Stardust';
             src: url('fonts/stardust1.3.ttf') format('truetype'),
                  url('fonts/stardust.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        } */
+        @font-face {
+            font-family: 'DungGeunMo';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/DungGeunMo.woff') format('woff');
             font-weight: normal;
             font-style: normal;
         }
@@ -292,10 +298,22 @@
             const nameField = document.getElementById('warning_field');
             const sideSelect = document.getElementById('side_select');
             const guestCount = document.getElementById('guest_count');
-            if (nameField.checkValidity() && sideSelect.value && guestCount.checkValidity()) {
-                document.getElementById('dialog-attendance').showModal();
+            let errorMessage = "";
+
+            if (!nameField.value.trim()) {
+                errorMessage += "이름을 입력해주세요.\n";
+            }
+            if (!sideSelect.value) {
+                errorMessage += "신랑측 또는 신부측을 선택해주세요.\n";
+            }
+            if (!guestCount.value) {
+                errorMessage += "참석 인원을 선택해주세요.\n";
+            }
+
+            if (errorMessage) {
+                alert(errorMessage.trim());
             } else {
-                alert('모든 필드를 입력해주세요.');
+                document.getElementById('dialog-attendance').showModal();
             }
         }
 
